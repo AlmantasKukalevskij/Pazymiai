@@ -1,0 +1,5 @@
+              VARDAS             PAVARDE            VIDURKIS             MEDIANA
+====================================================================================
+               etumi                emtu                 9.2                8.88
+                rbwb                bunw                 3.6                3.36
+               sbrtb            ryneetyn                 4.4                4.48
