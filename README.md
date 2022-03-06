@@ -1,16 +1,21 @@
 # Pirma_uzduotis
+Mokiniu vidurkio ir medianos skaičiavimas.
 
 ### 
 
-### V0.1
+### V0.2
 
 ### 
 
 ### Kaip veikia programa:
 
-Pirma vartotojas pasirenka ar nori skaiciuoti vidurkį ar medianą.
+Pirma vartotojas pasirenka ar nori suvesti mokinių informacija rankomis ar nuskaityti iš failo.
 
-Vartotojas pasirenka ar namų darbų skaičius yra žinomas.
+Jeigu vartotojas pasirenka nuskaityti informaciją iš failo, tuomet atsakymai bus iškarto išvedami į "atsakymai.txt" failą.
+
+Jeigu pasirenkamas suvedimas ranka, tuomet vartotojas seka šiais žingsniais:
+
+Vartotojas pasirenka ar mokinių skaičius yra žinomas.
 
 Tuomet vartotojui leidžiama pasirinkti ar jis nori įvesti pažymius rankomas ar kad jie būtų sugeneruoti automatiskai
 
