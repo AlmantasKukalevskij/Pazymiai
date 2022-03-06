@@ -1,20 +1,114 @@
-// Pazymiai.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+#include "headers/data.h"
+#include "headers/tikrinimas.h"
+#include "headers/IvestisIsvestis.h"
 
-#include <iostream>
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    srand(time(NULL));
+
+    bool kurimas = false;
+    bool mediana = false;
+    bool mokiniuSkaicius = false;
+    string Mediana;
+    string generuotiNd;
+    string MokiniuSkaicius;
+    string failoNuskaitymas;
+
+    int mokiniuSk = 0;
+
+
+
+    vector<mokinys> VisiMokiniai;
+    vector<string> length;
+    std::ofstream fout("atsakymai.txt");
+
+    cout << "Ar norite vesti pazymius ranka (taip), kitaip (ne) pazymiai bus nuskaityti is failo" << endl;
+    failoNuskaitymas = atsakymoTikrinimas();
+
+
+    if (failoNuskaitymas == "ne")
+    {
+        try
+        {
+            std::ifstream fin("mokiniai.txt");
+            skaitymas(fin, length, VisiMokiniai);
+        }
+        catch (const std::exception&)
+        {
+            cout << "ivesties txt failas mokiniai nerastas" << endl;
+        }
+        
+        
+    }
+    else
+    {
+
+
+        cout << "Ar mokiniu skaicius yra zinomas (taip/ne)?";
+        MokiniuSkaicius = atsakymoTikrinimas();
+        if (MokiniuSkaicius == "taip")
+        {
+            cout << "Mokiniu skaicius zinomas" << endl;
+            mokiniuSkaicius = true;
+        }
+        else
+        {
+            cout << "Mokiniu skaicius nezinomas" << endl;
+        }
+
+
+        cout << "Ar norite jog namu darbu pazymiai butu sugeneruoti automatiskai (taip/ne)?";
+        generuotiNd = atsakymoTikrinimas();
+        if (generuotiNd == "taip")
+        {
+            cout << "Namu darbu pazymiai bus automatiskai sugeneruoti" << endl;
+            kurimas = true;
+        }
+        else
+        {
+            cout << "Namu darbu pazymiai nebus automatiskai generuojami" << endl;
+        }
+
+        if (mokiniuSkaicius)
+        {
+            cout << "Iveskite mokiniu skaiciu: ";
+            mokiniuSk = IntTikrinimas();
+            for (int i = 0; i < mokiniuSk; i++)
+            {
+                mokinys data;
+                ivestis(data, kurimas);
+                VisiMokiniai.push_back(data);
+            }
+        }
+        else
+        {
+            string mok;
+            while (true)
+            {
+                cout << "Ar norite irasyti dar viena mokini? (taip/ne) ";  mok = atsakymoTikrinimas();
+                if (mok == "ne")
+                    break;
+                mokinys data;
+                ivestis(data, kurimas);
+                VisiMokiniai.push_back(data);
+            }
+
+        }
+
+
+    }
+
+
+
+    std::sort(VisiMokiniai.begin(), VisiMokiniai.end(), [](mokinys& a, mokinys& b) {return a.vardas < b.vardas; });
+    fout << std::setw(20) << "VARDAS" << std::setw(20) << "PAVARDE" << std::setw(20) << "VIDURKIS" << std::setw(20) << "MEDIANA" << endl;
+    fout << "====================================================================================" << endl;
+
+    for (mokinys mokinys : VisiMokiniai) isved(mokinys, fout);
+
+
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln 
+
