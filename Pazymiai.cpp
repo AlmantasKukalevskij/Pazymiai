@@ -28,19 +28,12 @@ struct mokinys
 
 void ivestis(mokinys& temp, bool kurimas);
 void isved(mokinys& temp, ofstream& fout);
-//void RandomNdIvedimas(mokinys& temp, int pazimys);
 bool PazTikrinimas(int t);
 int pazymioIvedimas();
 int IntTikrinimas();
 string atsakymoTikrinimas();
 void skaitymas(ifstream& fin, vector<string>& length, vector<mokinys>& mokiniai);
 
-
-
-//bool egzaminas;
-//bool pazimys;
-//bool rezultatas;
-bool suvedimas;
 
 
 int main()
@@ -57,8 +50,7 @@ int main()
 
     int mokiniuSk = 0;
 
-    //cout << "iveskite mokiniu skaiciu: "; cin >> mokiniuSk;
-    //mokinys* VisiMokiniai = new mokinys[mokiniuSk];
+    
 
     vector<mokinys> VisiMokiniai;
     std::ofstream fout("atsakymai.txt");
@@ -76,17 +68,6 @@ int main()
     else
     {
 
-        cout << " Ar norite gauti pazymiu mediana(taip), kitaip bus skaiciuojamas vidurkis (ne) ";
-        Mediana = atsakymoTikrinimas();
-        if (Mediana == "taip")
-        {
-            cout << "Atsakymas bus skaiciuojamas su mediana" << endl;
-            mediana = true;
-        }
-        else
-        {
-            cout << "Atsakymas bus skaiciuojamas su vidurkiu" << endl;
-        }
 
         cout << "Ar mokiniu skaicius yra zinomas (taip/ne)?";
         MokiniuSkaicius = atsakymoTikrinimas();
@@ -163,7 +144,7 @@ void ivestis(mokinys& temp, bool kurimas)
     temp.pazymiuSk = IntTikrinimas();
 
 
-    //temp.pazymiai = new int[temp.pazymiuSk];
+    
     if (kurimas)
     {
         for (int i = 0; i < temp.pazymiuSk; i++)
@@ -273,7 +254,7 @@ void skaitymas(std::ifstream& fin, std::vector<string>& length, std::vector<moki
             t.pazymiai.push_back(p);
         }
         fin >> t.egzaminas;
-        t.pazymiuSk = t.pazymiai.size(); // what it do?
+        t.pazymiuSk = t.pazymiai.size();
         mokiniai.push_back(t);
     }
 }
