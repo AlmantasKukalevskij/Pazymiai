@@ -21,7 +21,7 @@ Tuomet vartotojui leidžiama pasirinkti ar jis nori įvesti pažymius rankomas a
 
 Tada vartotojas prašomas įvesti studentų skaičių jeigu jis yra žinomas, jeigu ne, jis gali juos nesunkiai susikurti, įvesti jų namų darbų bei egzamino pažymius.
 
-Atlikus šiuos žingsnius vartotojui bus parodytas kiekvieno mokinio vidurkis arba mediana, priklausomai nuo to ka pasirinko.
+Atlikus šiuos žingsnius vartotojui bus parodytas kiekvieno mokinio vidurkis ir mediana "atsakymai.txt" faile.
 
 (Pažymių vidurkis sudaromis vadovaujantis šia formule: galutinis = 0.4 * vidurkis + 0.6 * egzaminas)
  (Pažymių mediana sudaroma vadovaujantis šia formule: mediana = 0.4 * pažymių mediana + 0.6 * egzaminas)
