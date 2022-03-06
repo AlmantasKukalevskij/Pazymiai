@@ -35,7 +35,6 @@ string atsakymoTikrinimas();
 void skaitymas(ifstream& fin, vector<string>& length, vector<mokinys>& mokiniai);
 
 
-
 int main()
 {
     srand(time(NULL));
@@ -50,9 +49,8 @@ int main()
 
     int mokiniuSk = 0;
 
-    
-
     vector<mokinys> VisiMokiniai;
+    vector<string> length;
     std::ofstream fout("atsakymai.txt");
 
     cout << "Ar norite vesti pazymius ranka (taip), kitaip (ne) pazymiai bus nuskaityti is failo" << endl;
@@ -61,14 +59,12 @@ int main()
 
     if (failoNuskaitymas == "ne")
     {
-        vector<string> length;
+        
         std::ifstream fin("mokiniai.txt");
         skaitymas(fin, length, VisiMokiniai);
     }
     else
     {
-
-
         cout << "Ar mokiniu skaicius yra zinomas (taip/ne)?";
         MokiniuSkaicius = atsakymoTikrinimas();
         if (MokiniuSkaicius == "taip")
@@ -120,10 +116,7 @@ int main()
 
         }
 
-
     }
-
-
 
     std::sort(VisiMokiniai.begin(), VisiMokiniai.end(), [](mokinys& a, mokinys& b) {return a.vardas < b.vardas; });
     fout << std::setw(20) << "VARDAS" << std::setw(20) << "PAVARDE" << std::setw(20) << "VIDURKIS" << std::setw(20) << "MEDIANA" << endl;
@@ -144,7 +137,6 @@ void ivestis(mokinys& temp, bool kurimas)
     temp.pazymiuSk = IntTikrinimas();
 
 
-    
     if (kurimas)
     {
         for (int i = 0; i < temp.pazymiuSk; i++)
