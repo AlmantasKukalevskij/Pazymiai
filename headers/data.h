@@ -8,6 +8,11 @@
 #include <vector>
 #include <functional>
 #include <fstream>
+#include <stdlib.h>
+#include <stdio.h>
+#include <chrono>
+#include <random>
+#include <sstream>
 
 using std::cout;
 using std::cin;
@@ -16,6 +21,13 @@ using std::string;
 using std::vector;
 using std::ofstream;
 using std::ifstream;
+using std::setw;
+using std::left;
+using std::right;
+
+using namespace std;
+using hrClock = std::chrono::high_resolution_clock;
+using durationDouble = std::chrono::duration<double>;
 
 struct mokinys
 {
@@ -23,7 +35,12 @@ struct mokinys
     vector<int> pazymiai;
     int pazymiuSk = 0;
     int egzaminas;
-    double rezult = 0;
+    //double rezult = 0;
     double vidurkis = 0;
     double mediana = 0;
 };
+
+extern bool egzaminas;
+extern bool pazymys;
+extern bool rezultatas;
+extern bool manual;
