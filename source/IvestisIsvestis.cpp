@@ -1,7 +1,7 @@
-
 #include "data.h"
-#include "IvestisIsvestis.h"
 #include "tikrinimas.h"
+
+int pazymioivedimas();
 
 void ivestis(mokinys& temp, bool kurimas)
 {
@@ -12,7 +12,7 @@ void ivestis(mokinys& temp, bool kurimas)
 
     cout << "Iveskite namu darbu skaiciu: ";
     temp.pazymiuSk = IntTikrinimas();
-
+    cout << endl;
 
 
     if (kurimas)
@@ -29,60 +29,97 @@ void ivestis(mokinys& temp, bool kurimas)
     {
         for (int i = 0; i < temp.pazymiuSk; i++) {
             cout << "Iveskite " << i + 1 << " -a(-i) pazymi: ";
-            temp.pazymiai.push_back(pazymioIvedimas());
+            temp.pazymiai.push_back(pazymioivedimas());
         }
         cout << "Veskite egzamino ivertinima: ";
-        temp.egzaminas = pazymioIvedimas();
+        temp.egzaminas = pazymioivedimas();
     }
 
     cout << endl;
 
 }
 
-void isved(mokinys& temp, ofstream& fout)
+
+
+
+void buferioSkaitymas(vector<mokinys>& mokiniai, string file_name)
 {
+    std::string line;
+    std::stringstream buffer;
 
-    fout << std::setw(20) << temp.vardas << std::setw(20) << temp.pavarde;
+    std::ifstream open_f(file_name);
 
-    std::sort(temp.pazymiai.begin(), temp.pazymiai.end());
-    if (temp.pazymiuSk % 2 != 0) temp.mediana = 0.4 * (double)temp.pazymiai[temp.pazymiuSk / 2] + 0.6 * temp.egzaminas;
-    else temp.mediana = 0.4 * ((double)(temp.pazymiai[(temp.pazymiuSk - 1) / 2] + temp.pazymiai[temp.pazymiuSk / 2]) / 2.0) + 0.6 * temp.egzaminas;
+    buffer << open_f.rdbuf();
+    open_f.close();
+    std::getline(buffer, line);
 
-    for (int x = 0; x < temp.pazymiuSk; x++) temp.vidurkis += temp.pazymiai[x] * 1.0;
-    temp.vidurkis = (0.4 * (temp.vidurkis / temp.pazymiuSk)) + 0.6 * temp.egzaminas;
-
-    fout << std::setw(20) << temp.mediana << std::setw(20) << temp.vidurkis << endl;
+    while (buffer)
+    {
+        std::getline(buffer, line);
+        if (line.length() == 0)
+            break;
+        mokinys t;
+        std::istringstream lineStream(line);
+        lineStream >> t.vardas >> t.pavarde;
+        int mark;
+        while (lineStream >> mark)
+        {
+            t.pazymiai.push_back(mark);
+        }
+        t.egzaminas = t.pazymiai.back();
+        t.pazymiai.pop_back();
+        mokiniai.push_back(t);
+    }
 
 }
 
-int pazymioIvedimas()
+void buferioRasymas(vector<mokinys>& mokiniai)
+{
+    std::stringstream isvestis;
+
+    isvestis << std::left << std::setw(20) << "Vardas";
+    isvestis << std::left << std::setw(20) << "Pavarde";
+    isvestis << std::left << std::setw(20) << "Vidurkis";
+    isvestis << std::left << std::setw(20) << "Mediana";
+    isvestis << endl;
+
+    for (auto& mok : mokiniai)
+    {
+        isvestis << std::left << std::setw(20) << mok.vardas;
+        isvestis << std::left << std::setw(20) << mok.pavarde;
+        isvestis << std::left << std::setw(20) << mok.vidurkis;
+        isvestis << std::left << std::setw(20) << mok.mediana;
+        isvestis << endl;
+    }
+
+    mokiniai.clear();
+    std::ofstream file_out("rezultatas.txt");
+    file_out << isvestis.rdbuf();
+    file_out.close();
+
+}
+void vectoriusToFile(string file_name, vector<mokinys>& data)
+{
+    std::stringstream isvestis;
+    isvestis << std::left << std::setw(20) << "Vardas" << std::left << std::setw(20) << "Pavarde" << std::left << std::setw(20) << "Vid." << std::left << std::setw(20) << "Med." << endl;
+    for (auto& mok : data)
+    {
+        isvestis << std::left << std::setw(20) << mok.vardas;
+        isvestis << std::left << std::setw(20) << mok.pavarde;
+        isvestis << std::left << std::setw(20) << mok.vidurkis;
+        isvestis << std::left << std::setw(20) << mok.mediana;
+        isvestis << endl;
+    }
+    std::ofstream file_out(file_name);
+    file_out << isvestis.rdbuf();
+    file_out.close();
+}
+
+int pazymioivedimas()
 {
     while (true)
     {
         int pazimys = IntTikrinimas();
         if (PazTikrinimas(pazimys)) return pazimys;
-    }
-}
-
-void skaitymas(std::ifstream& fin, std::vector<string>& length, std::vector<mokinys>& mokiniai)
-{
-    string t;
-    while ((fin.peek() != '\n') && (fin >> t))
-        length.push_back(t);
-    length.resize(length.size() - 3);
-
-    while (!fin.eof())
-    {
-        int p;
-        mokinys t;
-        fin >> t.vardas >> t.pavarde;
-        for (auto& el : length)
-        {
-            fin >> p;
-            t.pazymiai.push_back(p);
-        }
-        fin >> t.egzaminas;
-        t.pazymiuSk = t.pazymiai.size();
-        mokiniai.push_back(t);
     }
 }
