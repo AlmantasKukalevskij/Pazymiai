@@ -3,7 +3,7 @@ Mokiniu vidurkio ir medianos skaičiavimas.
 
 ### 
 
-### V0.3
+### V0.4
 
 ### 
 
@@ -11,17 +11,25 @@ Mokiniu vidurkio ir medianos skaičiavimas.
 
 Pirma vartotojas pasirenka ar nori suvesti mokinių informacija rankomis ar nuskaityti iš failo.
 
-Jeigu vartotojas pasirenka nuskaityti informaciją iš failo, tuomet atsakymai bus iškarto išvedami į "atsakymai.txt" failą.
+  Jeigu pasirenkama jog bus nuskaityti iš failo tuomet paklausiama ar juos norėtų sugeneruoti automatiškai.
 
-Jeigu pasirenkamas suvedimas ranka, tuomet vartotojas seka šiais žingsniais:
+  Tuomet leidžiama pavadinti failą kuriame bus rezultatai
+  
+  Paklausiama kiek norės mokinių sugeneruoti ir kiek pažymių norima sugeneruoti
+  
+Jeigu pasirenkama jog nori suvesti rankomis tuomet programa veikia taip pat kaip ### V.3
 
-Vartotojas pasirenka ar mokinių skaičius yra žinomas.
 
-Tuomet vartotojui leidžiama pasirinkti ar jis nori įvesti pažymius rankomas ar kad jie būtų sugeneruoti automatiskai
 
-Tada vartotojas prašomas įvesti studentų skaičių jeigu jis yra žinomas, jeigu ne, jis gali juos nesunkiai susikurti, įvesti jų namų darbų bei egzamino pažymius.
+Mokinių sk.	Failo generavimas	Mokinių padalinimas	Surašymas į failus	Programa veikė
+1000	0.0686153	0.0112014	0.0173944	13.2024
+10000	0.257157	0.139011	0.162321	9.15759
+100000	1.40039	1.14546	0.54007	17.1435
+1000000	21.309	11.531	7.8625	43.364
+10000000	228.885	84.4228	67.322	382.658
+![image](https://user-images.githubusercontent.com/92589309/169707760-4d129b15-cdc6-4d60-80f5-9a2cc8b6c659.png)
 
-Atlikus šiuos žingsnius vartotojui bus parodytas kiekvieno mokinio vidurkis ir mediana "atsakymai.txt" faile.
+P.S. Senas ir labai apkrautas kompiuteris
 
-(Pažymių vidurkis sudaromis vadovaujantis šia formule: galutinis = 0.4 * vidurkis + 0.6 * egzaminas)
- (Pažymių mediana sudaroma vadovaujantis šia formule: mediana = 0.4 * pažymių mediana + 0.6 * egzaminas)
+cpu: intel 6700k
+ram: 16gb
