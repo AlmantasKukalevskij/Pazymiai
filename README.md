@@ -18,3 +18,8 @@ Tuomet pasirenkame pažymių nuskaitymą iš failo paspaudus 0
 Ir pasirenkame kokio tipo bandymą norime atlikti.
 
 ![image](https://user-images.githubusercontent.com/92589309/170342662-596c2819-99d1-4346-b5c6-f75aa272e031.png)
+
+Kompiuterio parametrai:
+CPU - 6700k
+RAM - 16GB
+SSD - KINGSTON 480GB
