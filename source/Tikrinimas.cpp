@@ -1,5 +1,5 @@
 #include "data.h"
-#include "IvestisIsvestis.h"
+
 #include "tikrinimas.h"
 
 
@@ -43,4 +43,21 @@ bool PazTikrinimas(int t)
         cout << " Ivestas neteisingas pazimys (desimtbale sistema)" << endl;
         return false;
     }
+}
+
+int validMode(int from, int to)
+{
+    while (true)
+    {
+        int mode = IntTikrinimas();
+        for (int i = from; i <= to; i++)
+            if (mode == i)
+                return mode;
+        cout << "Neteisingas skaicius" << endl;
+    }
+}
+
+bool lyginimas(mokinys& a, mokinys& b)
+{
+    return a.vardas < b.pavarde;
 }

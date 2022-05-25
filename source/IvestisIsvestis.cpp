@@ -1,88 +1,409 @@
-
 #include "data.h"
-#include "IvestisIsvestis.h"
 #include "tikrinimas.h"
+#include "IvestisIsvestis.h"
 
-void ivestis(mokinys& temp, bool kurimas)
+//int pazymioivedimas();
+
+void ivestis(mokinys& temp)
 {
     cout << endl;
 
     cout << "Veskite varda: "; cin >> temp.vardas;
     cout << "Veskite pavarde: "; cin >> temp.pavarde;
 
-    cout << "Iveskite namu darbu skaiciu: ";
-    temp.pazymiuSk = IntTikrinimas();
-
-
-
-    if (kurimas)
+    if (egzaminas)
     {
-        for (int i = 0; i < temp.pazymiuSk; i++)
+        cout << "Iveskite egzamino pazimi: ";
+        while (true)
         {
-            temp.pazymiai.push_back(rand() % 10 + 1);
-            cout << "Ivestas" << i + 1 << " pazimys bus: " << temp.pazymiai[i] << endl;
+            int egzaminas = IntTikrinimas();
+            if (PazTikrinimas(egzaminas))
+            {
+                temp.egzaminas = egzaminas;
+                break;
+            }
         }
-        temp.egzaminas = rand() % 10 + 1;
-        cout << "Egzamino pazimys bus: " << temp.egzaminas << endl;
     }
     else
-    {
-        for (int i = 0; i < temp.pazymiuSk; i++) {
-            cout << "Iveskite " << i + 1 << " -a(-i) pazymi: ";
-            temp.pazymiai.push_back(pazymioIvedimas());
-        }
-        cout << "Veskite egzamino ivertinima: ";
-        temp.egzaminas = pazymioIvedimas();
-    }
-
-    cout << endl;
-
+        temp.egzaminas = randomInt(1, 10);
+    
+    if (pazymys)
+        rankinisPazIvedimas(temp);
+    else
+        atsitiktinioPazKurimas(temp);
+    cout << "Pazymiai ivesti" << endl;
 }
 
-void isved(mokinys& temp, ofstream& fout)
+void rankinisPazIvedimas(mokinys& temp)
 {
+    cout << "Iveskite pazymius, norit baigti iveskite 0" << endl;
 
-    fout << std::setw(20) << temp.vardas << std::setw(20) << temp.pavarde;
-
-    std::sort(temp.pazymiai.begin(), temp.pazymiai.end());
-    if (temp.pazymiuSk % 2 != 0) temp.mediana = 0.4 * (double)temp.pazymiai[temp.pazymiuSk / 2] + 0.6 * temp.egzaminas;
-    else temp.mediana = 0.4 * ((double)(temp.pazymiai[(temp.pazymiuSk - 1) / 2] + temp.pazymiai[temp.pazymiuSk / 2]) / 2.0) + 0.6 * temp.egzaminas;
-
-    for (int x = 0; x < temp.pazymiuSk; x++) temp.vidurkis += temp.pazymiai[x] * 1.0;
-    temp.vidurkis = (0.4 * (temp.vidurkis / temp.pazymiuSk)) + 0.6 * temp.egzaminas;
-
-    fout << std::setw(20) << temp.mediana << std::setw(20) << temp.vidurkis << endl;
-
-}
-
-int pazymioIvedimas()
-{
+    int t;
     while (true)
     {
-        int pazimys = IntTikrinimas();
-        if (PazTikrinimas(pazimys)) return pazimys;
+        t = IntTikrinimas();
+        if (t == 0)
+            break;
+        else if (PazTikrinimas(t))
+            temp.pazymiai.push_back(t);
     }
 }
 
-void skaitymas(std::ifstream& fin, std::vector<string>& length, std::vector<mokinys>& mokiniai)
-{
-    string t;
-    while ((fin.peek() != '\n') && (fin >> t))
-        length.push_back(t);
-    length.resize(length.size() - 3);
 
-    while (!fin.eof())
+
+
+void buferioSkaitymas(vector<mokinys>& mokiniai, string file_name, bool gen, double& fopenTime)
+{
+    std::string line;
+    std::stringstream buffer;
+
+    std::ifstream open_f;
+    auto stime = hrClock::now();
+    openFile(open_f);
+    fopenTime = durationDouble(hrClock::now() - stime).count();
+
+    auto readStart = hrClock::now();
+    buffer << open_f.rdbuf();
+    open_f.close();
+    std::getline(buffer, line);
+    
+    int counter = 0;
+    while (buffer)
     {
-        int p;
+        std::getline(buffer, line);
+        if (line.length() == 0)
+            break;
         mokinys t;
-        fin >> t.vardas >> t.pavarde;
-        for (auto& el : length)
+        std::istringstream lineStream(line);
+        lineStream >> t.vardas >> t.pavarde;
+        int mark;
+        while (lineStream >> mark)
         {
-            fin >> p;
-            t.pazymiai.push_back(p);
+            t.pazymiai.push_back(mark);
         }
-        fin >> t.egzaminas;
-        t.pazymiuSk = t.pazymiai.size();
+        t.egzaminas = t.pazymiai.back();
+        t.pazymiai.pop_back();
         mokiniai.push_back(t);
+    }
+    cout << "Failo nuskaitymas uztruko: " << durationDouble(hrClock::now() - readStart).count() << " sek." << endl;
+}
+
+void buferioSkaitymas(list<mokinys>& mokiniai, string file_name, bool gen, double& fopenTime)
+{
+    std::string line;
+    std::stringstream buffer;
+
+    std::ifstream open_f;
+    auto stime = hrClock::now();
+    openFile(open_f);
+    fopenTime = durationDouble(hrClock::now() - stime).count();
+
+    auto readStart = hrClock::now();
+    buffer << open_f.rdbuf();
+    open_f.close();
+    std::getline(buffer, line);
+
+    int counter = 0;
+    while (buffer)
+    {
+        std::getline(buffer, line);
+        if (line.length() == 0)
+            break;
+        mokinys t;
+        std::istringstream lineStream(line);
+        lineStream >> t.vardas >> t.pavarde;
+        int mark;
+        while (lineStream >> mark)
+        {
+            t.pazymiai.push_back(mark);
+        }
+        t.egzaminas = t.pazymiai.back();
+        t.pazymiai.pop_back();
+        mokiniai.push_back(t);
+    }
+    cout << "Failo nuskaitymas uztruko: " << durationDouble(hrClock::now() - readStart).count() << " sek." << endl;
+}
+
+void buferioSkaitymas(deque<mokinys>& mokiniai, string file_name, bool gen, double& fopenTime)
+{
+    std::string line;
+    std::stringstream buffer;
+
+    std::ifstream open_f;
+    auto stime = hrClock::now();
+    openFile(open_f);
+    fopenTime = durationDouble(hrClock::now() - stime).count();
+
+    auto readStart = hrClock::now();
+    buffer << open_f.rdbuf();
+    open_f.close();
+    std::getline(buffer, line);
+
+    int counter = 0;
+    while (buffer)
+    {
+        std::getline(buffer, line);
+        if (line.length() == 0)
+            break;
+        mokinys t;
+        std::istringstream lineStream(line);
+        lineStream >> t.vardas >> t.pavarde;
+        int mark;
+        while (lineStream >> mark)
+        {
+            t.pazymiai.push_back(mark);
+        }
+        t.egzaminas = t.pazymiai.back();
+        t.pazymiai.pop_back();
+        mokiniai.push_back(t);
+    }
+    cout << "Failo nuskaitymas uztruko: " << durationDouble(hrClock::now() - readStart).count() << " sek." << endl;
+}
+
+void buferioRasymas(std::string write_vardas, vector<mokinys>& mokiniai, bool manual, bool rez)
+{
+    std::stringstream isvestis;
+
+    isvestis << left << setw(20) << "Vardas";
+    isvestis << left << setw(20) << "Pavarde";
+    if (rez || !manual)
+    isvestis << std::left << std::setw(20) << "Vidurkis";
+    if(!rez || !manual)
+    isvestis << std::left << std::setw(20) << "Mediana";
+    isvestis << endl;
+    if (!manual)
+    {
+        for (auto& mok : mokiniai)
+        {
+            isvestis << left << setw(20) << mok.vardas;
+            isvestis << left << setw(20) << mok.pavarde;
+            isvestis << left << setw(20) << mok.vidurkis;
+            isvestis << left << setw(20) << mok.mediana;
+            isvestis << endl;
+        }
+    }
+    else if (rez)
+    {
+        for (auto& mok : mokiniai)
+        {
+            isvestis << left << setw(20) << mok.vardas;
+            isvestis << left << setw(20) << mok.pavarde;
+            isvestis << left << setw(20) << mok.vidurkis;
+            isvestis << endl;
+        }
+    }
+    else if (!rez)
+    {
+        for (auto& mok : mokiniai)
+        {
+            isvestis << left << setw(20) << mok.vardas;
+            isvestis << left << setw(20) << mok.pavarde;
+            isvestis << left << setw(20) << mok.mediana;
+            isvestis << endl;
+        }
+    }
+
+    mokiniai.clear();
+    std::ofstream file_out(write_vardas);
+    file_out << isvestis.rdbuf();
+    file_out.close();
+
+}
+
+void buferioRasymas(std::string write_vardas, list<mokinys>& mokiniai, bool manual, bool rez)
+{
+    std::stringstream isvestis;
+
+    isvestis << left << setw(20) << "Vardas";
+    isvestis << left << setw(20) << "Pavarde";
+    if (rez || !manual)
+        isvestis << std::left << std::setw(20) << "Vidurkis";
+    if (!rez || !manual)
+        isvestis << std::left << std::setw(20) << "Mediana";
+    isvestis << endl;
+    if (!manual)
+    {
+        for (auto& mok : mokiniai)
+        {
+            isvestis << left << setw(20) << mok.vardas;
+            isvestis << left << setw(20) << mok.pavarde;
+            isvestis << left << setw(20) << mok.vidurkis;
+            isvestis << left << setw(20) << mok.mediana;
+            isvestis << endl;
+        }
+    }
+    else if (rez)
+    {
+        for (auto& mok : mokiniai)
+        {
+            isvestis << left << setw(20) << mok.vardas;
+            isvestis << left << setw(20) << mok.pavarde;
+            isvestis << left << setw(20) << mok.vidurkis;
+            isvestis << endl;
+        }
+    }
+    else if (!rez)
+    {
+        for (auto& mok : mokiniai)
+        {
+            isvestis << left << setw(20) << mok.vardas;
+            isvestis << left << setw(20) << mok.pavarde;
+            isvestis << left << setw(20) << mok.mediana;
+            isvestis << endl;
+        }
+    }
+
+    mokiniai.clear();
+    std::ofstream file_out(write_vardas);
+    file_out << isvestis.rdbuf();
+    file_out.close();
+
+}
+
+void buferioRasymas(std::string write_vardas, deque<mokinys>& mokiniai, bool manual, bool rez)
+{
+    std::stringstream isvestis;
+
+    isvestis << left << setw(20) << "Vardas";
+    isvestis << left << setw(20) << "Pavarde";
+    if (rez || !manual)
+        isvestis << std::left << std::setw(20) << "Vidurkis";
+    if (!rez || !manual)
+        isvestis << std::left << std::setw(20) << "Mediana";
+    isvestis << endl;
+    if (!manual)
+    {
+        for (auto& mok : mokiniai)
+        {
+            isvestis << left << setw(20) << mok.vardas;
+            isvestis << left << setw(20) << mok.pavarde;
+            isvestis << left << setw(20) << mok.vidurkis;
+            isvestis << left << setw(20) << mok.mediana;
+            isvestis << endl;
+        }
+    }
+    else if (rez)
+    {
+        for (auto& mok : mokiniai)
+        {
+            isvestis << left << setw(20) << mok.vardas;
+            isvestis << left << setw(20) << mok.pavarde;
+            isvestis << left << setw(20) << mok.vidurkis;
+            isvestis << endl;
+        }
+    }
+    else if (!rez)
+    {
+        for (auto& mok : mokiniai)
+        {
+            isvestis << left << setw(20) << mok.vardas;
+            isvestis << left << setw(20) << mok.pavarde;
+            isvestis << left << setw(20) << mok.mediana;
+            isvestis << endl;
+        }
+    }
+
+    mokiniai.clear();
+    std::ofstream file_out(write_vardas);
+    file_out << isvestis.rdbuf();
+    file_out.close();
+
+}
+
+void failoGen(int size, string file_name, int ndSkaicius)
+{
+    auto genStart = hrClock::now();
+    std::stringstream isvestis;
+    isvestis << left << setw(20) << "Vardas";
+    isvestis << left << setw(20) << "Pavarde";
+    for (int i = 1; i <= ndSkaicius; i++)
+    {
+        isvestis << left << "ND" << setw(5) << i;
+    }
+    isvestis << left << setw(7) << "Egzaminas" << endl;
+    for (int i = 0; i < size; i++)
+    {
+        isvestis << genMokString(ndSkaicius).str();
+    }
+    std::ofstream file_out(file_name);
+    file_out << isvestis.rdbuf();
+    file_out.close();
+    cout << size << " Irasu failo generavimo laikas: "<<durationDouble(hrClock::now() - genStart).count() << " sek." << endl;
+}
+
+void contToFile(string file_name, vector<mokinys>& data)
+{
+    std::stringstream isvestis;
+    isvestis << std::left << std::setw(20) << "Vardas" << std::left << std::setw(20) << "Pavarde" << std::left << std::setw(20) << "Vid." << std::left << std::setw(20) << "Med." << endl;
+    for (auto& mok : data)
+    {
+        isvestis << std::left << std::setw(20) << mok.vardas;
+        isvestis << std::left << std::setw(20) << mok.pavarde;
+        isvestis << std::left << std::setw(20) << mok.vidurkis;
+        isvestis << std::left << std::setw(20) << mok.mediana;
+        isvestis << endl;
+    }
+    std::ofstream file_out(file_name);
+    file_out << isvestis.rdbuf();
+    file_out.close();
+}
+
+void contToFile(string file_name, list<mokinys>& data)
+{
+    std::stringstream isvestis;
+    isvestis << std::left << std::setw(20) << "Vardas" << std::left << std::setw(20) << "Pavarde" << std::left << std::setw(20) << "Vid." << std::left << std::setw(20) << "Med." << endl;
+    for (auto& mok : data)
+    {
+        isvestis << std::left << std::setw(20) << mok.vardas;
+        isvestis << std::left << std::setw(20) << mok.pavarde;
+        isvestis << std::left << std::setw(20) << mok.vidurkis;
+        isvestis << std::left << std::setw(20) << mok.mediana;
+        isvestis << endl;
+    }
+    std::ofstream file_out(file_name);
+    file_out << isvestis.rdbuf();
+    file_out.close();
+}
+
+void contToFile(string file_name, deque<mokinys>& data)
+{
+    std::stringstream isvestis;
+    isvestis << std::left << std::setw(20) << "Vardas" << std::left << std::setw(20) << "Pavarde" << std::left << std::setw(20) << "Vid." << std::left << std::setw(20) << "Med." << endl;
+    for (auto& mok : data)
+    {
+        isvestis << std::left << std::setw(20) << mok.vardas;
+        isvestis << std::left << std::setw(20) << mok.pavarde;
+        isvestis << std::left << std::setw(20) << mok.vidurkis;
+        isvestis << std::left << std::setw(20) << mok.mediana;
+        isvestis << endl;
+    }
+    std::ofstream file_out(file_name);
+    file_out << isvestis.rdbuf();
+    file_out.close();
+}
+
+void openFile(std::ifstream& open_f)
+{
+    bool err = true;
+    cin.ignore();
+    while(err)
+    {
+        cout << "Iveskite failo pavadinima, kitaip bus mokiniai.txt";
+        string file_name;
+        getline(cin, file_name);
+
+        if (file_name.empty())
+            file_name = "mokiniai.txt";
+        try
+        {
+            open_f.open(file_name);
+            if (open_f.fail())
+                throw std::invalid_argument("Ivestas neteisingas failo pavadinimas");
+            err = false;
+        }
+        catch (const std::invalid_argument& e)
+        {
+            cout << e.what() << std::endl;
+        }
     }
 }
