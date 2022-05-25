@@ -1,27 +1,20 @@
 # Pirma_uzduotis
-Mokiniu vidurkio ir medianos skaičiavimas.
+
 
 ### 
 
-### V0.3
+### V0.5
 
 ### 
 
 ### Kaip veikia programa:
 
-Pirma vartotojas pasirenka ar nori suvesti mokinių informacija rankomis ar nuskaityti iš failo.
+(pakeistas userio inputas iš taip/ne į 1 ir 0, paprastesniam ir aiškesniam naudojimui)
 
-Jeigu vartotojas pasirenka nuskaityti informaciją iš failo, tuomet atsakymai bus iškarto išvedami į "atsakymai.txt" failą.
+Isijungus programą jūsų paklaus ar norite sugeneruoti failus, norit atlikti bandymus su vector, list ir deque spauskite 0
 
-Jeigu pasirenkamas suvedimas ranka, tuomet vartotojas seka šiais žingsniais:
+Tuomet pasirenkame pažymių nuskaitymą iš failo paspaudus 0
 
-Vartotojas pasirenka ar mokinių skaičius yra žinomas.
+Ir pasirenkame kokio tipo bandymą norime atlikti.
 
-Tuomet vartotojui leidžiama pasirinkti ar jis nori įvesti pažymius rankomas ar kad jie būtų sugeneruoti automatiskai
-
-Tada vartotojas prašomas įvesti studentų skaičių jeigu jis yra žinomas, jeigu ne, jis gali juos nesunkiai susikurti, įvesti jų namų darbų bei egzamino pažymius.
-
-Atlikus šiuos žingsnius vartotojui bus parodytas kiekvieno mokinio vidurkis ir mediana "atsakymai.txt" faile.
-
-(Pažymių vidurkis sudaromis vadovaujantis šia formule: galutinis = 0.4 * vidurkis + 0.6 * egzaminas)
- (Pažymių mediana sudaroma vadovaujantis šia formule: mediana = 0.4 * pažymių mediana + 0.6 * egzaminas)
+![image](https://user-images.githubusercontent.com/92589309/170342662-596c2819-99d1-4346-b5c6-f75aa272e031.png)
