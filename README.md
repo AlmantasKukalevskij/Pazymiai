@@ -2,21 +2,26 @@
 
 ### 
 
-### V0.1
+### V1.0
 
 ### 
 
 ### Kaip veikia programa:
 
-Pirma vartotojas pasirenka ar nori skaiciuoti vidurkį ar medianą.
+Paleidus programą paklausiama ar vartotojas nori sugeneruoti failus (1/0)
 
-Vartotojas pasirenka ar namų darbų skaičius yra žinomas.
+-Pasirinkus 0 paklausiama ar norima vesti pažymius ranka (1), ar (0) pažymius nuskaityti iš failo
 
-Tuomet vartotojui leidžiama pasirinkti ar jis nori įvesti pažymius rankomas ar kad jie būtų sugeneruoti automatiskai
+tuomet leidžiama pasirinkti tarp tipų: Vector, List, Deque
 
-Tada vartotojas prašomas įvesti studentų skaičių jeigu jis yra žinomas, jeigu ne, jis gali juos nesunkiai susikurti, įvesti jų namų darbų bei egzamino pažymius.
+bei galiausiai paklausiama kokia strategija norima naudotis, bei koks yra failo pavadinimas
 
-Atlikus šiuos žingsnius vartotojui bus parodytas kiekvieno mokinio vidurkis arba mediana, priklausomai nuo to ka pasirinko.
+- Pasirinkus 1 pirmame žingsnyje
 
-(Pažymių vidurkis sudaromis vadovaujantis šia formule: galutinis = 0.4 * vidurkis + 0.6 * egzaminas)
- (Pažymių mediana sudaroma vadovaujantis šia formule: mediana = 0.4 * pažymių mediana + 0.6 * egzaminas)
+galima sugeneruoti mokinius ir jų pažymius į failą (kaip ir anksciau)
+
+![image](https://user-images.githubusercontent.com/92589309/170729492-472d0f30-1ef3-487b-8fb8-359c487c67a2.png)
+
+
+
+Kompiuterio parametrai: CPU - 6700k RAM - 16GB SSD - KINGSTON 480GB
