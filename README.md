@@ -10,7 +10,7 @@
 
 Paleidus programą paklausiama ar vartotojas nori sugeneruoti failus (1/0)
 
--Pasirinkus 0 paklausiama ar norima vesti pažymius ranka (1), ar (0) pažymius nuskaityti iš failo
+- Pasirinkus 0 paklausiama ar norima vesti pažymius ranka (1), ar (0) pažymius nuskaityti iš failo
 
 tuomet leidžiama pasirinkti tarp tipų: Vector, List, Deque
 
