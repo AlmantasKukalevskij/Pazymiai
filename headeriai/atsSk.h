@@ -5,11 +5,6 @@
 #include "IvestisIsvestis.h"
 
 
-//double vidurkis(vector<int> pazymys, int egzaminas);
-//double mediana(vector<int> pazymys, int egzaminas);
-//void atsSk(vector<mokinys>& mokiniai, bool rezultatas, bool manual);
-//void galutinisMedVid(vector<mokinys>& mokiniai);
-
 double galutinisVid(vector<int> paz, int egz);
 double galutinisMed(vector<int> paz, int egz);
 void RezSk(vector<mokinys>& mokiniai, bool rez, bool manual);
