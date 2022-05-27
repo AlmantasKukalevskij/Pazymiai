@@ -24,6 +24,7 @@ int main()
         string genFile_name;
         cin.ignore();
         cout << "Kaip norite pavadinti faila?(kitaip bus mokiniai.txt)";
+        getline(cin, genFile_name);
         genFile_name.empty() ? genFile_name = "mokiniai.txt" : genFile_name += ".txt";
         cout << "Kiek sugeneruoti mokiniu?" << endl;
         int MokCount;
